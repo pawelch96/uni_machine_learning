@@ -25,12 +25,17 @@ number_of_splits = 10
 # data = arff.loadarff('dataset.arff')
 # df = pd.DataFrame(data[0])
 
-data = pd.read_csv("sets/wall-robot-navigation.csv", header=None, sep=',', skiprows=[0])
+data = pd.read_csv("sets/segment.csv", header=None, sep=',', skiprows=[0])
 array = data.values
 last_col = data.values.shape[1]
 
-X = array[:,:last_col-2]
+print(data.values.shape)
+
+X = array[:,:last_col-1]
 y = array[:,last_col-1]
+
+print(y.shape)
+print(X.shape)
 
 # Ranks
 from scipy.stats import ks_2samp, wilcoxon, ttest_ind   #mannwhitneyu, friedmanchisquare
@@ -65,24 +70,24 @@ skf = StratifiedKFold(n_splits=number_of_splits) #podobno 10 jest najbardziej op
 scores = np.zeros((number_of_splits, number_of_attr-1, 3)) # 3d array
 for f, (train, test) in enumerate(skf.split(ranked_X, y)):
     for i in range(number_of_attr-1):
-        clf_r = KNeighborsClassifier(n_neighbors=number_of_neighbors)
-        # clf_r = GaussianNB()
+        # clf_r = KNeighborsClassifier(n_neighbors=number_of_neighbors)
+        clf_r = GaussianNB()
         # clf_r = SVC(gamma="scale")
         # clf_r = MLPClassifier()
         clf_r.fit(ranked_X[train,:i+2], y[train])
 
         score_r = clf_r.score(ranked_X[test,:i+2], y[test])
 
-        clf_wilc = KNeighborsClassifier(n_neighbors=number_of_neighbors)
-        # clf_wilc = GaussianNB()
+        # clf_wilc = KNeighborsClassifier(n_neighbors=number_of_neighbors)
+        clf_wilc = GaussianNB()
         # clf_wilc = SVC(gamma="scale")
         # clf_wilc = MLPClassifier()
         clf_wilc.fit(wilcoxon_X[train,:i+2], y[train])
 
         score_wilc = clf_wilc.score(wilcoxon_X[test,:i+2], y[test])
 
-        clf_ttest = KNeighborsClassifier(n_neighbors=number_of_neighbors)
-        # clf_ttest = GaussianNB()
+        # clf_ttest = KNeighborsClassifier(n_neighbors=number_of_neighbors)
+        clf_ttest = GaussianNB()
         # clf_ttest = SVC(gamma="scale")
         # clf_ttest = MLPClassifier()
         clf_ttest.fit(ttest_X[train,:i+2], y[train])
