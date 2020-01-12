@@ -25,7 +25,7 @@ number_of_splits = 10
 # data = arff.loadarff('dataset.arff')
 # df = pd.DataFrame(data[0])
 
-data = pd.read_csv("sets/v1.csv", header=None, sep=',', skiprows=[0])
+data = pd.read_csv("sets/wall-robot-navigation.csv", header=None, sep=',', skiprows=[0])
 array = data.values
 last_col = data.values.shape[1]
 
