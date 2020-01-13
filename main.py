@@ -28,7 +28,7 @@ neurons = [20]
 # data = arff.loadarff('dataset.arff')
 # df = pd.DataFrame(data[0])
 
-data = pd.read_csv("sets/steel-plates-fault.csv", header=None, sep=',', skiprows=[0])
+data = pd.read_csv("sets/wine-white.csv", header=None, sep=',', skiprows=[0])
 array = data.values
 last_col = data.values.shape[1]
 
@@ -69,7 +69,7 @@ ttest_X = X[:, ranks]
 number_of_attr = ranked_X.shape[1]
 
 # Cross validation
-skf = StratifiedKFold(n_splits=number_of_splits) #podobno 10 jest najbardziej optymalną wartością
+skf = StratifiedKFold(n_splits=number_of_splits)
 scores = np.zeros((number_of_splits, number_of_attr-1, 3))
 for f, (train, test) in enumerate(skf.split(ranked_X, y)):
     for i in range(number_of_attr-1):
