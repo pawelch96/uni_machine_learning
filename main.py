@@ -28,7 +28,7 @@ neurons = [20]
 # data = arff.loadarff('dataset.arff')
 # df = pd.DataFrame(data[0])
 
-data = pd.read_csv("sets/optdigits.csv", header=None, sep=',', skiprows=[0])
+data = pd.read_csv("sets/steel-plates-fault.csv", header=None, sep=',', skiprows=[0])
 array = data.values
 last_col = data.values.shape[1]
 
