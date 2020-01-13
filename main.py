@@ -28,7 +28,7 @@ neurons = [20]
 # data = arff.loadarff('dataset.arff')
 # df = pd.DataFrame(data[0])
 
-data = pd.read_csv("sets/waveform.csv", header=None, sep=',', skiprows=[0])
+data = pd.read_csv("sets/optdigits.csv", header=None, sep=',', skiprows=[0])
 array = data.values
 last_col = data.values.shape[1]
 
@@ -73,29 +73,29 @@ skf = StratifiedKFold(n_splits=number_of_splits) #podobno 10 jest najbardziej op
 scores = np.zeros((number_of_splits, number_of_attr-1, 3))
 for f, (train, test) in enumerate(skf.split(ranked_X, y)):
     for i in range(number_of_attr-1):
-        # clf_r = KNeighborsClassifier(n_neighbors=number_of_neighbors)
-        clf_r = GaussianNB()
-        # clf_r = SVC(gamma="scale")
+        clf_r = KNeighborsClassifier(n_neighbors=number_of_neighbors)
+        # clf_r = GaussianNB()
+        # clf_r = SVC(gamma="auto")
         # clf_r = MLPClassifier(solver='sgd', hidden_layer_sizes=neurons[0], activation='relu', max_iter = 200, momentum=1)
-        clf_r.fit(ranked_X[train,:i+2], y[train])
+        clf_r.fit(ranked_X[train,:i+1], y[train])
 
-        score_r = clf_r.score(ranked_X[test,:i+2], y[test])
+        score_r = clf_r.score(ranked_X[test,:i+1], y[test])
 
-        # clf_wilc = KNeighborsClassifier(n_neighbors=number_of_neighbors)
-        clf_wilc = GaussianNB()
-        # clf_wilc = SVC(gamma="scale")
+        clf_wilc = KNeighborsClassifier(n_neighbors=number_of_neighbors)
+        # clf_wilc = GaussianNB()
+        # clf_wilc = SVC(gamma="auto")
         # clf_wilc = MLPClassifier(solver='sgd', hidden_layer_sizes=neurons[0], activation='relu', max_iter = 200, momentum=1)
-        clf_wilc.fit(wilcoxon_X[train,:i+2], y[train])
+        clf_wilc.fit(wilcoxon_X[train,:i+1], y[train])
 
-        score_wilc = clf_wilc.score(wilcoxon_X[test,:i+2], y[test])
+        score_wilc = clf_wilc.score(wilcoxon_X[test,:i+1], y[test])
 
-        # clf_ttest = KNeighborsClassifier(n_neighbors=number_of_neighbors)
-        clf_ttest = GaussianNB()
-        # clf_ttest = SVC(gamma="scale")
+        clf_ttest = KNeighborsClassifier(n_neighbors=number_of_neighbors)
+        # clf_ttest = GaussianNB()
+        # clf_ttest = SVC(gamma="auto")
         # clf_ttest = MLPClassifier(solver='sgd', hidden_layer_sizes=neurons[0], activation='relu', max_iter = 200, momentum=1)
-        clf_ttest.fit(ttest_X[train,:i+2], y[train])
+        clf_ttest.fit(ttest_X[train,:i+1], y[train])
 
-        score_ttest = clf_ttest.score(ttest_X[test,:i+2], y[test])
+        score_ttest = clf_ttest.score(ttest_X[test,:i+1], y[test])
 
         # print(f, i+2, "%.3f vs %.3f vs %.3f" % (score, score_r, score_reg))
 
@@ -131,11 +131,11 @@ for cord in listOfCordinates_3:
 
 
 # Drawing plot
-# plt.plot(range(number_of_attr-1), mean_scores[:,0], label='Kol-Smir')
-# plt.plot(range(number_of_attr-1), mean_scores[:,1], label='Wilcoxon')
-# plt.plot(range(number_of_attr-1), mean_scores[:,2], label='T-student')
-#
-# plt.ylim(0,1)
-# plt.legend()
-# plt.tight_layout()
-# plt.savefig("foo.png")
+plt.plot(range(number_of_attr-1), mean_scores[:,0], label='Kol-Smir')
+plt.plot(range(number_of_attr-1), mean_scores[:,1], label='Wilcoxon')
+plt.plot(range(number_of_attr-1), mean_scores[:,2], label='T-student')
+
+plt.ylim(0,1)
+plt.legend()
+plt.tight_layout()
+plt.savefig("foo.png")
